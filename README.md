@@ -9,6 +9,6 @@ You can also view another implementation with the actual Redux library in the **
 
 ```
 npm install
-npx webpack index.js
-Run HTML File with Browser or Live Server extension in VSCODE
+npm start 
 ```
+(Opens your default browser automatically)
