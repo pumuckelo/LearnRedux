@@ -44,6 +44,7 @@ const todos = (state = [], action) => {
       return state.map(todo => {
         if (todo.id == action.id) {
           todo.completed = !todo.completed;
+          console.log("reducer trigerred");
           return todo;
         }
         return todo;
@@ -116,7 +117,7 @@ const removeGoalAction = id => ({
 });
 
 const toggleGoalAction = id => ({
-  type: "TOGGLE_TODO",
+  type: "TOGGLE_GOAL",
   id
 });
 
@@ -135,6 +136,7 @@ const goalReducer = (state, action) => {
     case "TOGGLE_GOAL":
       index = state.findIndex(goal => goal.id === action.id);
       state[index].completed = !state[index].completed;
+      console.log("goal reducer triggered");
       return state;
   }
 };
@@ -175,7 +177,6 @@ const addTodoHandler = () => {
   );
 
   todoInput.value = "";
-  renderTodosToDOM();
 };
 
 const addGoalHandler = () => {
@@ -198,6 +199,17 @@ const renderTodosToDOM = () => {
     let li = document.createElement("li");
     let text = document.createTextNode(todo.description);
     li.appendChild(text);
+    //add remove button
+    let removeButton = Helper.createRemoveButton(() =>
+      store.dispatch(removeTodoAction(todo.id))
+    );
+    li.appendChild(removeButton);
+    li.style.cursor = "pointer";
+    li.style.textDecoration = todo.completed ? "line-through" : "";
+    li.addEventListener("click", () => {
+      store.dispatch(toggleTodoAction(todo.id));
+      console.log("clicked");
+    });
     return li;
   });
   todolist.textContent = "";
@@ -212,6 +224,16 @@ const renderGoalsToDOM = () => {
     let li = document.createElement("li");
     let text = document.createTextNode(goal.description);
     li.appendChild(text);
+    //add remove button
+    li.appendChild(
+      Helper.createRemoveButton(() => store.dispatch(removeGoalAction(goal.id)))
+    );
+    li.style.cursor = "pointer";
+    li.style.textDecoration = goal.completed ? "line-through" : "";
+    //update state
+    li.addEventListener("click", () =>
+      store.dispatch(toggleGoalAction(goal.id))
+    );
     return li;
   });
   goallist.textContent = "";
