@@ -154,20 +154,20 @@ const rootReducer2 = (state = {}, action) => {
   };
 };
 
-store.dispatch(
-  addGoalAction({
-    description: "Joa muss",
-    id: "1234wtrsfdjhknw",
-    completed: false
-  })
-);
-store.dispatch(
-  addTodoAction({
-    id: "sdwe7868e",
-    description: "Muell rausbringen",
-    completed: false
-  })
-);
+// store.dispatch(
+//   addGoalAction({
+//     description: "Joa muss",
+//     id: "1234wtrsfdjhknw",
+//     completed: false
+//   })
+// );
+// store.dispatch(
+//   addTodoAction({
+//     id: "sdwe7868e",
+//     description: "Muell rausbringen",
+//     completed: false
+//   })
+// );
 
 //website js
 
