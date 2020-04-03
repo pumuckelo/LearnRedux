@@ -1,3 +1,5 @@
+import Helper from "./helper";
+
 const createStore = reducer => {
   let state;
 
@@ -145,7 +147,11 @@ const rootReducer2 = (state = {}, action) => {
 };
 
 store.dispatch(
-  addGoalAction({ titl: "Joa muss", id: "1234wtrsfdjhknw", completed: false })
+  addGoalAction({
+    description: "Joa muss",
+    id: "1234wtrsfdjhknw",
+    completed: false
+  })
 );
 store.dispatch(
   addTodoAction({
@@ -154,3 +160,76 @@ store.dispatch(
     completed: false
   })
 );
+
+//website js
+
+const addTodoHandler = () => {
+  console.log("clicked");
+  let todoInput = document.querySelector("#todo");
+  store.dispatch(
+    addTodoAction({
+      description: todoInput.value,
+      completed: false,
+      id: Helper.generateId()
+    })
+  );
+
+  todoInput.value = "";
+  renderTodosToDOM();
+};
+
+const addGoalHandler = () => {
+  console.log("clicked");
+  let goalInput = document.querySelector("#goal");
+  store.dispatch(
+    addGoalAction({
+      description: goalInput.value,
+      completed: false,
+      id: Helper.generateId()
+    })
+  );
+  goalInput.value = "";
+};
+
+const renderTodosToDOM = () => {
+  const todolist = document.querySelector("#todolist");
+  //create list items for the todos of state
+  const childs = store.getState().todos.map(todo => {
+    let li = document.createElement("li");
+    let text = document.createTextNode(todo.description);
+    li.appendChild(text);
+    return li;
+  });
+  todolist.textContent = "";
+  childs.forEach(child => todolist.append(child));
+  // todolist.appendChild(childs);
+};
+
+const renderGoalsToDOM = () => {
+  const goallist = document.querySelector("#goallist");
+  //create list items for the todos of state
+  const childs = store.getState().goals.map(goal => {
+    let li = document.createElement("li");
+    let text = document.createTextNode(goal.description);
+    li.appendChild(text);
+    return li;
+  });
+  goallist.textContent = "";
+  childs.forEach(child => goallist.append(child));
+  // todolist.appendChild(childs);
+};
+
+const render = () => {
+  renderTodosToDOM();
+  renderGoalsToDOM();
+};
+
+store.subscribe(() => render());
+
+// EVENT LISTENEERS
+document
+  .querySelector("#goalbutton")
+  .addEventListener("click", () => addGoalHandler());
+document
+  .querySelector("#todobutton")
+  .addEventListener("click", () => addTodoHandler());
