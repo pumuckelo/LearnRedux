@@ -1,4 +1,5 @@
 import Helper from "./helper";
+import * as Redux from "redux";
 
 const createStore = reducer => {
   let state;
@@ -82,7 +83,12 @@ const rootReducer = (state = {}, action) => {
   };
 };
 
-const store = createStore(rootReducer);
+const store = Redux.createStore(
+  Redux.combineReducers({
+    goals,
+    todos
+  })
+);
 
 store.subscribe(() => console.log("State got updated"));
 const unsubscribe = store.subscribe(() =>
