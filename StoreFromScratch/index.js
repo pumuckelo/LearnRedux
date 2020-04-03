@@ -85,3 +85,72 @@ store.subscribe(() => console.log("State got updated"));
 const unsubscribe = store.subscribe(() =>
   console.log(`New State is:`, store.getState())
 );
+
+//action creator
+
+const addTodoAction = todo => ({
+  type: "ADD_TODO",
+  todo
+});
+
+const removeTodoAction = id => ({
+  type: "REMOVE_TODO",
+  id
+});
+
+const toggleTodoAction = id => ({
+  type: "TOGGLE_TODO",
+  id
+});
+
+const addGoalAction = goal => ({
+  type: "ADD_GOAL",
+  goal
+});
+
+const removeGoalAction = id => ({
+  type: "REMOVE_GOAL",
+  id
+});
+
+const toggleGoalAction = id => ({
+  type: "TOGGLE_TODO",
+  id
+});
+
+const goalReducer = (state, action) => {
+  let index;
+
+  switch (action.type) {
+    case "ADD_GOAL":
+      return [...state, action.goal];
+
+    case "REMOVE_GOAL":
+      index = state.findIndex(goal => goal.id === action.id);
+      state.splice(index, 1);
+      return state;
+
+    case "TOGGLE_GOAL":
+      index = state.findIndex(goal => goal.id === action.id);
+      state[index].completed = !state[index].completed;
+      return state;
+  }
+};
+
+const rootReducer2 = (state = {}, action) => {
+  return {
+    goals: goalReducer(state.goals, action),
+    todos: todos(state.todos, action)
+  };
+};
+
+store.dispatch(
+  addGoalAction({ titl: "Joa muss", id: "1234wtrsfdjhknw", completed: false })
+);
+store.dispatch(
+  addTodoAction({
+    id: "sdwe7868e",
+    description: "Muell rausbringen",
+    completed: false
+  })
+);
